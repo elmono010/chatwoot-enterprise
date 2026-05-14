@@ -27,6 +27,7 @@ x-base-config: &base-config
     - AWS_REGION=${AWS_REGION}
     - S3_REGION=${S3_REGION}
     - S3_PROTOCOL=${S3_PROTOCOL}
+    - WEBHOOK_TIMEOUT=${WEBHOOK_TIMEOUT:-90}
     - CW_EDITION=enterprise
     - INSTALLATION_PRICING_PLAN=enterprise
     - CHATWOOT_ENABLED=${CHATWOOT_ENABLED}
