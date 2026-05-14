@@ -17,4 +17,4 @@ RUN sed -i "s/value: @instance_info\['plan_quantity'\]/value: @instance_info['pl
 # 4. Habilitar funciones Premium en el modelo de Featurable
 RUN sed -i 's/def feature_enabled?(name)/def feature_enabled?(name)\n    feature = Featurable::FEATURE_LIST.find { |f| f["name"] == name.to_s }\n    return true if ChatwootApp.enterprise? \&\& feature \&\& feature["premium"]\n/g' app/models/concerns/featurable.rb
 
-USER chatwoot
+USER 1000
