@@ -31,6 +31,11 @@ RUN find enterprise -name "*.rb" -exec sed -i 's/base.extend(Enterprise::Account
 # 8. Incrementar Timeout de Webhooks a 45 segundos
 RUN sed -i 's/timeout : 5/timeout : 45/g' lib/webhooks/trigger.rb
 
+# 9. Parche de compatibilidad S3 (Mapear S3_ a AWS_ si es necesario)
+RUN sed -i "s/access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID', '') %>/access_key_id: <%= ENV['S3_ACCESS_KEY_ID'] || ENV['AWS_ACCESS_KEY_ID'] %>/g" config/storage.yml
+RUN sed -i "s/secret_access_key: <%= ENV.fetch('AWS_SECRET_ACCESS_KEY', '') %>/secret_access_key: <%= ENV['S3_SECRET_ACCESS_KEY'] || ENV['AWS_SECRET_ACCESS_KEY'] %>/g" config/storage.yml
+RUN sed -i "s/region: <%= ENV.fetch('AWS_REGION', '') %>/region: <%= ENV['S3_REGION'] || ENV['AWS_REGION'] %>/g" config/storage.yml
+
 # Corregir permisos de forma global para evitar errores de caché y temporales
 RUN mkdir -p /app/tmp /app/storage
 RUN chown -R 1000:1000 /app
