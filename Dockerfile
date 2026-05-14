@@ -24,6 +24,10 @@ RUN sed -i "s/InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN_QUANTI
 # 6. Forzar límites de agentes en el modelo de cuenta
 RUN sed -i 's/def agent_limits/def agent_limits\n    return ChatwootApp.max_limit\n/g' enterprise/app/models/enterprise/account/plan_usage_and_limits.rb
 
+# 7. Bypass de validaciones de Cloud y forzar Enterprise en controladores
+RUN find enterprise -name "*.rb" -exec sed -i 's/def check_cloud_env/def check_cloud_env\n    return true\n/g' {} +
+RUN find enterprise -name "*.rb" -exec sed -i 's/base.extend(Enterprise::Account)/# base.extend(Enterprise::Account)/g' {} +
+
 # Corregir permisos de forma global para evitar errores de caché y temporales
 RUN mkdir -p /app/tmp /app/storage
 RUN chown -R 1000:1000 /app
