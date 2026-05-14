@@ -51,7 +51,6 @@ services:
     restart: always
     volumes:
       - chatwoot-postgres-data:/var/lib/postgresql/data
-      - ./init-vector.sql:/docker-entrypoint-initdb.d/init-vector.sql
     environment:
       - POSTGRES_DB=${POSTGRES_DATABASE}
       - POSTGRES_USER=${POSTGRES_USERNAME}
