@@ -24,8 +24,8 @@ RUN sed -i "s/InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN_QUANTI
 # 6. Forzar límites de agentes en el modelo de cuenta
 RUN sed -i 's/def agent_limits/def agent_limits\n    return ChatwootApp.max_limit\n/g' enterprise/app/models/enterprise/account/plan_usage_and_limits.rb
 
-# Corregir permisos solo en carpetas y archivos críticos
-RUN mkdir -p /app/storage
-RUN chown -R 1000:1000 /app/storage /app/lib /app/enterprise /app/app/models/concerns /app/Gemfile.lock
+# Corregir permisos de forma global para evitar errores de caché y temporales
+RUN mkdir -p /app/tmp /app/storage
+RUN chown -R 1000:1000 /app
 
 USER 1000
