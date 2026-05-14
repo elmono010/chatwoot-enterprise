@@ -28,8 +28,8 @@ RUN sed -i 's/def agent_limits/def agent_limits\n    return ChatwootApp.max_limi
 RUN find enterprise -name "*.rb" -exec sed -i 's/def check_cloud_env/def check_cloud_env\n    return true\n/g' {} +
 RUN find enterprise -name "*.rb" -exec sed -i 's/base.extend(Enterprise::Account)/# base.extend(Enterprise::Account)/g' {} +
 
-# 8. Incrementar Timeout de Webhooks a 90 segundos
-RUN sed -i 's/timeout : 5/timeout : 90/g' lib/webhooks/trigger.rb
+# 8. Incrementar Timeout de Webhooks a 90 segundos (Parche de código)
+RUN sed -i '/def webhook_timeout/,/end/c\  def webhook_timeout\n    env_timeout = ENV["WEBHOOK_TIMEOUT"].presence\&.to_i\n    return env_timeout if env_timeout\&.positive?\n    raw_timeout = GlobalConfig.get_value("WEBHOOK_TIMEOUT")\n    timeout = raw_timeout.presence\&.to_i\n    timeout\&.positive? ? timeout : 90\n  end' lib/webhooks/trigger.rb
 
 # Corregir permisos de forma global para evitar errores de caché y temporales
 RUN mkdir -p /app/tmp /app/storage
