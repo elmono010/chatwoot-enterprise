@@ -31,6 +31,9 @@ RUN find enterprise -name "*.rb" -exec sed -i 's/base.extend(Enterprise::Account
 # 8. Incrementar Timeout de Webhooks a 90 segundos (Parche de código)
 RUN sed -i '/def webhook_timeout/,/end/c\  def webhook_timeout\n    env_timeout = ENV["WEBHOOK_TIMEOUT"].presence\&.to_i\n    return env_timeout if env_timeout\&.positive?\n    raw_timeout = GlobalConfig.get_value("WEBHOOK_TIMEOUT")\n    timeout = raw_timeout.presence\&.to_i\n    timeout\&.positive? ? timeout : 90\n  end' lib/webhooks/trigger.rb
 
+# 9. Permitir embeber el CRM en Iframe (Eliminar X-Frame-Options)
+RUN sed -i "s/class ApplicationController < ActionController::Base/class ApplicationController < ActionController::Base\n  after_action :allow_iframe_embedding\n  def allow_iframe_embedding\n    response.headers.delete('X-Frame-Options')\n  end/g" app/controllers/application_controller.rb
+
 # Corregir permisos de forma global para evitar errores de caché y temporales
 RUN mkdir -p /app/tmp /app/storage
 RUN chown -R 1000:1000 /app
