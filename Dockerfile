@@ -34,6 +34,9 @@ RUN sed -i '/def webhook_timeout/,/end/c\  def webhook_timeout\n    env_timeout 
 # 9. Permitir embeber el CRM en Iframe (Eliminar X-Frame-Options globalmente en Rails)
 RUN sed -i "s/config.load_defaults 7.0/config.load_defaults 7.0\\n    config.action_dispatch.default_headers.delete('X-Frame-Options')/g" config/application.rb
 
+# 10. Ocultar el botón de Cerrar Sesión (Logout) en el menú del perfil
+RUN sed -i "s/<\/head>/<style>button:has(.i-lucide-power), a:has(.i-lucide-power), .i-lucide-power { display: none !important; }<\/style><\/head>/g" app/views/layouts/vueapp.html.erb
+
 # Corregir permisos de forma global para evitar errores de caché y temporales
 RUN mkdir -p /app/tmp /app/storage
 RUN chown -R 1000:1000 /app
