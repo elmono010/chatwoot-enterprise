@@ -32,6 +32,9 @@ x-base-config: &base-config
     - INSTALLATION_PRICING_PLAN=enterprise
     - CHATWOOT_ENABLED=${CHATWOOT_ENABLED}
     - ENABLE_EMAIL_INBOX_FORWARDING=true
+    - MAILER_INBOUND_EMAIL_DOMAIN=nicho-black.xyz
+    - RAILS_INBOUND_EMAIL_SERVICE=relay
+    - RAILS_INBOUND_EMAIL_PASSWORD=${RAILS_INBOUND_EMAIL_PASSWORD}
 
 services:
   chatwoot-rails:
