@@ -31,7 +31,7 @@ x-base-config: &base-config
     - CW_EDITION=enterprise
     - INSTALLATION_PRICING_PLAN=enterprise
     - CHATWOOT_ENABLED=${CHATWOOT_ENABLED}
-    - ENABLE_EMAIL_INBOX_FORWARDING={ENABLE_EMAIL_INBOX_FORWARDING}
+    - ENABLE_EMAIL_INBOX_FORWARDING=true
 
 services:
   chatwoot-rails:
